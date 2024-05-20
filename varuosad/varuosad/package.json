@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "node parts.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "readline": "^1.3.0"
+  }
+}
