@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Data Fetch</title>
+    <style>
+        .weather-data {
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .weather-entry {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        function fetchWeatherData() {
+            fetch("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=59.4&lon=24.7", {
+                method: "GET"
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const timeseries = data.properties.timeseries;
+                    const weatherContainer = document.getElementById('weather-data');
+                    weatherContainer.innerHTML = ''; // Clear previous data
+
+                    timeseries.forEach(entry => {
+                        const time = entry.time;
+                        const airTemperature = entry.data.instant.details.air_temperature;
+                        const weatherEntry = document.createElement('div');
+                        weatherEntry.className = 'weather-entry';
+                        weatherEntry.textContent = ` ${time} ${airTemperature} °C`;
+                        weatherContainer.appendChild(weatherEntry);
+                    });
+                })
+        }
+    </script>
+</head>
+<body>
+    <button onclick="fetchWeatherData()">Fetch Weather Data</button>
+    <div id="weather-data" class="weather-data"></div>
+</body>
+</html>
+
